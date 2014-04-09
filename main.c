@@ -53,5 +53,5 @@ main(int argc, char **argv)
 static void
 usage(void)
 {
-	printf("Usage: %s ...\n", );
+	printf("Usage: %s ...\n", getprogname());
 }
