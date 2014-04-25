@@ -28,4 +28,5 @@ ACLOCAL_AMFLAGS	=	-I m4
 
 bin_PROGRAMS	=	upkg
 
+upkg_CFLAGS	=	-W -Wall -Wextra
 upkg_SOURCES	=	main.c
