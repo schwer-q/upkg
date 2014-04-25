@@ -29,6 +29,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 #include "config.h"
@@ -55,6 +56,7 @@ int
 main(int argc, char **argv)
 {
 	int ch;
+	int i;
 
 	while ((ch = getopt(argc, argv, "hVv")) != -1) {
 		switch (ch) {
@@ -75,6 +77,10 @@ main(int argc, char **argv)
 	if ((argc - optind) < 1) {
 		usage();
 		return (2);
+	}
+	for (i = 0; command[i].name != NULL; i++) {
+		if (strcmp(argv[optind], command[i].name) == 0)
+			return (command[i].main(argc - optind, argv + optind));
 	}
 	return (0);
 }
