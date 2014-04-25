@@ -25,19 +25,48 @@
  *
  */
 
+#include <sys/types.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "config.h"
+
+#include "upkg.h"
+
 static void usage(void);
+static void version(void);
+
+uint8_t	verbose_lvl = 0;
+static struct upkg_command command[] = {
+	{ "autoremove",	"Remove unneeded automatically installed pacages.",	NULL },
+	{ "install",	"Install new packages.",				NULL },
+	{ "keep",	"Mark packages as non-automatically installed.",	NULL },
+	{ "list",	"List installed packages.",				NULL },
+	{ "refresh",	"Refresh information about remote repositories.",	NULL },
+	{ "remove",	"Remove installed packages.",				NULL },
+	{ "unkeep",	"Mark packages as automatically installed.",		NULL },
+	{ "upgrade",	"Upgrade installed packages.",				NULL },
+	{ NULL,		NULL,							NULL }
+};
 
 int
 main(int argc, char **argv)
 {
 	int ch;
 
-	while ((ch = getopt(argc, argv, "")) != -1) {
+	while ((ch = getopt(argc, argv, "hVv")) != -1) {
 		switch (ch) {
+		case 'h':
+			usage();
+			return (0);
+		case 'V':
+			version();
+			return (0);
+		case 'v':
+			++verbose_lvl;
+			break;
 		default:
 			usage();
 			return (2);
@@ -51,7 +80,20 @@ main(int argc, char **argv)
 }
 
 static void
+version(void)
+{
+	printf("upkg version %s\n", VERSION);
+}
+
+static void
 usage(void)
 {
-	printf("Usage: %s ...\n", getprogname());
+	int i;
+
+	printf("Usage: %s command [options]\n", getprogname());
+	printf("\nCommands:\n");
+	for (i = 0; command[i].name != NULL; i++) {
+		printf("\t%-20s\t-- %s\n", command[i].name,
+		       command[i].description);
+	}
 }
