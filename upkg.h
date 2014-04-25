@@ -42,7 +42,7 @@ typedef enum upkg_action {
 struct upkg_command {
 	const char *name;
 	const char *description;
-	int (*funcptr)(int, char **);
+	int (*main)(int, char **);
 };
 
 #endif	/* _UPKG_H */
